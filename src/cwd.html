@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CWSoftware - CWD</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 0 auto 3rem;
+        padding: 0 0.5rem;
+        color: #000099;
+      }
+      a {
+        color: #990099;
+      }
+      a:visited {
+        color: #009999;
+      }
+      .return-button {
+        margin-right: 1rem;
+      }
+      body p, body ul {
+        font-size: 1.2rem;
+      }
+      h2 {
+        margin-top: 2rem;
+        margin-bottom: 0;
+      }
+      img {
+        max-width: 100%;
+        border: 1px solid black;
+      }
+      #thank-you {
+        border: solid 1px black;
+        text-align: center;
+        padding: 1rem;
+      }
+      #thank-you h2 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <a href="./index.html" class="return-button">&#x1F519;</a>
+    </h1>
+    <h1 style="text-align: center;">
+      Cosmos Wasm Daemon (CWD)
+    </h1>
+    <hr>
+    <p>
+      CWD is an <b>execution environment</b> for blockchains. What do we mean by this?
+    </p>
+    <p>
+      A blockchain is made up of two parts: consensus and execution. The lifecycle of a block is an
+      interplay between them:
+    </p>
+    <ul>
+      <li>
+        the consensus layer makes a block;
+      </li>
+      <li>
+        the block is passed to the execution layer, which executes the transactions;
+      </li>
+      <li>
+        the execution result is passed back to consensus, where nodes reach agreement over the result.
+      </li>
+    </ul>
+    <img src="blockchain.jpg">
+    <p>
+      CWD is an execution layer. It is agnostic to which consensus layer is used, meaning you can
+      couple it with a layer-1 (L1) consensus engine such as <a href="https://arxiv.org/abs/1807.04938">Tendermint</a>,
+      in which case you get an L1 chain, or with a layer-2 (L2) one, typically consisting of a
+      sequencer and a prover, in which case you get an L2 chain.
+    </p>
+    <img src="architecture.jpg">
+    <h2>
+      Execution
+    </h2>
+    <hr>
+    <p>
+      There are a few execution environments you can choose from when building your own blockchain:
+    </p>
+    <ul>
+      <li>
+        various implementations of the Ethereum Virtual Machine (EVM) such as Arbitrum, OP Stack,
+        Evmos, and <a href="https://github.com/berachain/polaris">Polaris</a>
+      </li>
+      <li>
+        Solana VM (SVM)
+      </li>
+      <li>
+        the two dialects of Move, <a href="https://aptos.dev/move/move-on-aptos/">Aptos</a> and <a href="https://blog.sui.io/why-we-created-sui-move/">Sui</a>
+      </li>
+      <li>
+        <a href="https://cosmwasm.com/">CosmWasm</a>
+      </li>
+      <li>
+        Cosmos SDK
+      </li>
+      <li>
+        Avalanche's <a href="https://github.com/ava-labs/hypersdk">HyperSDK</a>
+      </li>
+      <li>
+        Polkadot's <a href="https://github.com/paritytech/polkadot-sdk">Substrate</a>
+      </li>
+      <li>
+        <a href="https://github.com/Sovereign-Labs/sovereign-sdk">Sovereign SDK</a> for rollups
+      </li>
+      <li>
+        StarkNet
+      </li>
+      <li>
+        Polygon's <a href="https://polygon.technology/polygon-cdk">Chain Development Kit (CDK)</a>
+      </li>
+      <li>
+        and CWD, of course
+      </li>
+    </ul>
+    <p>
+      CWD is <i>a modified version</i> of CosmWasm with numerous improvements, reimplemented in the
+      Rust programming language (the original is in Go).
+    </p>
+    <p>
+      So, why choose CWD over our competitors? Because it is (at least in our opinion) <b>performant</b>,
+      <b>secure</b>, <b>feature rich</b>, and simply <b>a pleasure to use</b>: (<i>WARNING: nerd stuff below</i>)
+    </p>
+    <ul>
+      <li style="margin-bottom: 0.5rem;">
+        CWD uses <a href="https://en.wikipedia.org/wiki/WebAssembly">WebAssembly</a> or Wasm as the
+        sandbox for running smart contracts. Wasm is perhaps the most optimized virtual environment
+        of all, and it's portable - you can run your contracts in a web browser for example, which
+        massively simplifies webapp development in some cases.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CosmWasm is designed in a way that makes some most common security pitfalls, such as
+        reentrancy, fundamentally impossible. As a modified version of CosmWasm, CWD inherits this
+        benefit. See <a href="https://docs.cosmwasm.com/docs/architecture/smart-contracts">this page</a>
+        to learn more.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CWD smart contracts can do things not possible in other execution environments. For example,
+        <ul>
+          <li>
+            assigning actions to be executed at regular intervals without manual invokation
+          </li>
+          <li>
+            custom transaction ordering
+          </li>
+        </ul>
+        With competitor frameworks such as the EVM, these things require offchain bots (e.g. <a href="https://www.gelato.network/">Gelato</a>)
+        or MEV relays (<a href="">Flashbots</a>), but with CWD you get them for free.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CWD transactions are natively multicall.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CWD has <a href="https://www.ibcprotocol.dev/">Cosmos IBC</a> enshrined as the native
+        bridging protocol for cross-chain message passing with Ethereum and Cosmos chains.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CWD enshrines a unique token standard inspired by Solana's SPL and <a href="https://github.com/osmosis-labs/osmosis/tree/main/x/tokenfactory">works by Osmosis</a>
+        that removes ERC-20's approval mechanism (no more user confusion and hacks), allows for
+        multi-send as well as ERC-677's transferAndCall, also making it significantly easier to
+        index.
+      </li>
+      <li style="margin-bottom: 0.5rem;">
+        CWD implements, or will implement in later versions, some of the newest ideas in the crypto
+        space:
+        <ul>
+          <li>
+            <b>Native account abstraction.</b> In fact, there is no "externally owned accounts" or EOAs in
+            CWD at all. Every account is a smart contract.
+          </li>
+          <li>
+            Parallel processing (more research needed on this; Sei Network implemented this for
+            CosmWasm, we can perhaps copy what they did)
+          </li>
+          <li>
+            State rent and expiration (based on <a href="https://diem-developers-components.netlify.app/papers/the-diem-blockchain/2020-05-26.pdf">Diem litepaper</a>
+            section 4.4)
+          </li>
+        </ul>
+      </li>
+      <li>
+        Use the native Rust toolchain for testing, linting, and benchmarking. Import any Wasm-compatible
+        Rust library into your contracts.
+      </li>
+    </ul>
+    <img src="cosmwasm-vs-evm.jpg">
+    <p>
+      CWD is not the <i>fastest</i> execution environment. In fact, some of its designs are
+      explicitly not the most efficient in terms of CPU time or memory usage, but with tradeoffs
+      that we think are worth it, such as improved security or developer experience. <b>Our goal,
+      instead, is to make CWD the best framework for 95% of the applications.</b> The rest 5% that
+      require extreme optimizations can look for other solutions that tailor to their needs.
+    </p>
+    <h2>
+      Consensus
+    </h2>
+    <hr>
+    <p>
+      CWD communicates with consensus engines via an interface called <a href="https://github.com/cometbft/cometbft/blob/main/spec/abci/README.md">ABCI</a>.
+      Theoretically any consensus engine that implements ABCI can be used along with CWD. These
+      include:
+    </p>
+    <ul>
+      <li>
+        <a href="https://github.com/cometbft/cometbft">CometBFT</a>, an implementation of Tendermint
+        consensus protocol in the Go programming language
+      </li>
+      <li>
+        <a href="https://docs.union.build/architecture/cometbls">CometBLS</a>, a fork of CometBFT
+        using a different cryptography that is more ZK-friendly
+      </li>
+      <li>
+        <a href="https://github.com/rollkit/rollkit">Rollkit</a>
+      </li>
+      <li>
+        <a href="https://github.com/dymensionxyz/dymint">Dymint</a>
+      </li>
+    </ul>
+    <p>
+      We have not experimented with any ZK proof systems yet at this early stage, but there are a
+      few options which we will try out:
+    </p>
+    <ul>
+      <li>
+        <a href="https://github.com/risc0/risc0">RISC Zero</a>
+      </li>
+      <li>
+        <a href="https://github.com/fluentlabs-xyz/">Fluent</a> a.k.a. zkWASM
+      </li>
+      <li>
+        <a href="https://github.com/NilFoundation/zkllvm">zkLLVM</a>
+      </li>
+    </ul>
+    <h2>
+      Two things to note
+    </h2>
+    <hr>
+    <p>
+      We want to be completely honest to our customers (i.e. developers) on the
+      drawbacks of using CWD. In our view, there are two:
+    </p>
+    <ul>
+      <li>
+        <b>CWD is source available, but not open source.</b> It will be under a custom license that
+        works like this:
+        <ul style="margin: 0.5rem 0;">
+          <li>
+            if you want to deploy contracts on <i>an existing chain</i>, you can do it
+            completely freely;
+          </li>
+          <li>
+            to run nodes of <i>an existing chain</i>, or providing services for <i>an existing chain</i>
+            (e.g. RPC service) you can do it completely freely;
+          </li>
+          <li>
+            to launch <i>a new chain</i>, however, it is necessary to acquire a license from
+            CWSoftware, the company that owns CWD.
+          </li>
+        </ul>
+        CWSoftware may ask for a payment, typically in the form of a percentage of the project's
+        tokens (subject to reasonable vesting terms).
+        <div style="margin: 0.5rem 0;">
+          In my opinion, this is a good way for pricing, because 1) it poses no upfront cash cost
+          for developers, and 2) it creates incentive alignment - to grow the value of its tokens,
+          CWSoftware is incentivized to help developers succeed. For especially promising projects,
+          we may even offer add-on services such as consulting and custom dev works as part of the
+          licensing agreement.
+        </div>
+      </li>
+      <li>
+        <b>CWD is not backward compatible with existing CosmWasm smart contracts.</b>
+      </li>
+    </ul>
+    <div id="thank-you">
+      <h2>
+        Thank you for your interest CWD!
+      </h2>
+    </div>
+  </body>
+</html>
